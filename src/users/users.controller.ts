@@ -17,4 +17,9 @@ export class UsersController {
     async deleteUser(@Body() deleteUserDto: DeleteUserDto): Promise<any> {
         return this.usersService.deleteUser(deleteUserDto);
     }
+
+    @Post("/log_in")
+    async logIn(@Body() userDto: DeleteUserDto): Promise<any> {
+        return this.usersService.logIn(userDto);
+    }
 }

@@ -41,8 +41,25 @@ export class PostgreSQLInterface {
         await this.client.query(query);
     }
 
-    async queryDB(query: string, values?: any[]): Promise<QueryResult> {
-        return this.client.query(query, values);
+    async editTable(tableName: string, whereData: Row, setData: Row): Promise<void> {
+        const whereClause = Object.entries(whereData)
+            .map(([key, value]) => `${key} = ${valToSql(value)}`)
+            .join(' AND ');
+        const setClause = Object.entries(setData)
+            .map(([key, value]) => `${key} = ${valToSql(value)}`)
+            .join(' AND ');
+
+        const query = `
+      UPDATE ${tableName}
+      SET ${setClause}
+      WHERE ${whereClause}
+    `;
+
+        await this.client.query(query);
+    }
+
+    async queryDB(query: string): Promise<QueryResult> {
+        return this.client.query(query);
     }
 
     closeConnection(): void {
