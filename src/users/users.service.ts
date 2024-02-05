@@ -10,21 +10,30 @@ export class UsersService {
     async createUser(createUserDto: CreateUserDto): Promise<{ message: string }> {
         try {
             const db = new PostgreSQLInterface("postresql");
-            await db.addRow("users_data", { name: createUserDto.name, email: createUserDto.email, password: createUserDto.password });
+            let queryRawResults = await db.queryDB(`
+            select *
+            from users_data
+            where email = ${valToSql(createUserDto.email)}
+            and is_deleted = false
+            `);
+            if (queryRawResults.rowCount > 0) {
+                throw new HttpException('User is already exist', HttpStatus.CONFLICT);
+            }
+            await db.addRow("users_data", createUserDto);
             return { message: 'User created successfully' };
         } catch (error) {
-            console.error('Error adding user:', error);
-            throw new Error('Failed to add user');
+            if (error instanceof HttpException) { throw error; }
+            throw new HttpException("Failed to create user", error.HttpStatus);
         }
     }
     async deleteUser(deleteUserDto: DeleteUserDto): Promise<{ message: string }> {
         try {
             const db = new PostgreSQLInterface("postresql");
-            await db.deleteRows("users_data", { email: deleteUserDto.email });
+            await db.editTable("users_data", { email: deleteUserDto.email }, { is_deleted: true });
             return { message: 'User deleted successfully' };
         } catch (error) {
-            console.error('Error deleting user:', error);
-            throw new Error('Failed to delete user');
+            if (error instanceof HttpException) { throw error; }
+            throw new HttpException("Failed to delete user", error.HttpStatus);
         }
     }
     async logIn(userDto: DeleteUserDto): Promise<{ message: string, userData?: any }> {
@@ -46,20 +55,8 @@ export class UsersService {
                 throw new HttpException('Wrong Password', HttpStatus.UNAUTHORIZED);
             }
         } catch (error) { // todo change all exception throwing
-            if (error instanceof HttpException) {
-                throw error;
-            }
+            if (error instanceof HttpException) { throw error; }
             throw new HttpException("Failed to log in", error.HttpStatus);
-        }
-    }
-    async deleteUser2(deleteUserDto: DeleteUserDto): Promise<{ message: string }> {
-        try {
-            const db = new PostgreSQLInterface("postresql");
-            await db.deleteRows("users_data", { email: deleteUserDto.email });
-            return { message: 'User deleted successfully' };
-        } catch (error) {
-            console.error('Error deleting user:', error);
-            throw new Error('Failed to delete user');
         }
     }
 }
