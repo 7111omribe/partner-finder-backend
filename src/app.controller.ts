@@ -11,13 +11,5 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Post("/add_user")
-  async addUser(@Body() createUserDto: CreateUserDto): Promise<any> {
-    return this.appService.addUser(createUserDto);
-  }
 
-  @Post("/delete_user")
-  async deleteUser(@Body() deleteUserDto: DeleteUserDto): Promise<any> {
-    return this.appService.deleteUser(deleteUserDto);
-  }
 }
