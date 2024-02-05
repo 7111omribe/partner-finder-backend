@@ -29,17 +29,16 @@ export class PostgreSQLInterface {
     }
 
     async deleteRows(tableName: string, conditions: Row): Promise<void> {
-        const keys = Object.keys(conditions);
-        const values = Object.values(conditions);
-
-        const whereClause = keys.map((key, index) => `${key} = $${index + 1}`).join(' AND ');
+        const whereClause = Object.entries(conditions)
+            .map(([key, value]) => `${key} = ${valToSql(value)}`)
+            .join(' AND ');
 
         const query = `
       DELETE FROM ${tableName}
       WHERE ${whereClause}
     `;
 
-        await this.client.query(query, values);
+        await this.client.query(query);
     }
 
     async queryDB(query: string, values?: any[]): Promise<QueryResult> {
