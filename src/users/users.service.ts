@@ -5,11 +5,12 @@ import { CreateUserDto, DeleteUserDto } from './dto/users.dto';
 import { PostgreSQLInterface } from 'src/tools/connections/postresqlcon';
 import { valToSql } from 'src/tools/sqlTools';
 
+const db = new PostgreSQLInterface("postresql");
+
 @Injectable()
 export class UsersService {
     async createUser(createUserDto: CreateUserDto): Promise<{ message: string }> {
         try {
-            const db = new PostgreSQLInterface("postresql");
             let queryRawResults = await db.queryDB(`
             select *
             from users_data
@@ -28,7 +29,6 @@ export class UsersService {
     }
     async deleteUser(deleteUserDto: DeleteUserDto): Promise<{ message: string }> {
         try {
-            const db = new PostgreSQLInterface("postresql");
             await db.editTable("users_data", { email: deleteUserDto.email }, { is_deleted: true });
             return { message: 'User deleted successfully' };
         } catch (error) {
@@ -38,7 +38,6 @@ export class UsersService {
     }
     async logIn(userDto: DeleteUserDto): Promise<{ message: string, userData?: any }> {
         try {
-            const db = new PostgreSQLInterface("postresql");
             let queryRawResults = await db.queryDB(`
             select *
             from users_data
