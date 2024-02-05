@@ -25,7 +25,7 @@ export class PostgreSQLInterface {
       VALUES (${values.join(', ')})
     `;
 
-        await this.client.query(query, values);
+        await this.client.query(query);
     }
 
     async deleteRows(tableName: string, conditions: Row): Promise<void> {
