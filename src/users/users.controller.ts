@@ -10,7 +10,7 @@ export class UsersController {
 
     @Post("/add_user")
     async addUser(@Body() createUserDto: CreateUserDto): Promise<any> {
-        return this.usersService.addUser(createUserDto);
+        return this.usersService.createUser(createUserDto);
     }
 
     @Post("/delete_user")

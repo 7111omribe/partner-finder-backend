@@ -7,7 +7,7 @@ import { valToSql } from 'src/tools/sqlTools';
 
 @Injectable()
 export class UsersService {
-    async addUser(createUserDto: CreateUserDto): Promise<{ message: string }> {
+    async createUser(createUserDto: CreateUserDto): Promise<{ message: string }> {
         try {
             const db = new PostgreSQLInterface("postresql");
             await db.addRow("users_data", { name: createUserDto.name, email: createUserDto.email, password: createUserDto.password });
