@@ -9,7 +9,7 @@ const db = new PostgreSQLInterface("postresql");
 
 @Injectable()
 export class UsersService {
-    async createUser(createUserDto: CreateUserDto): Promise<{ message: string }> {
+    async createUser(createUserDto: CreateUserDto): Promise<{ message: string, userData?: any }> {
         try {
             let queryRawResults = await db.queryDB(`
             select *
@@ -21,7 +21,7 @@ export class UsersService {
                 throw new HttpException('User is already exist', HttpStatus.CONFLICT);
             }
             await db.addRow("users_data", createUserDto);
-            return { message: 'User created successfully' };
+            return { message: 'User created successfully', userData: createUserDto };
         } catch (error) {
             if (error instanceof HttpException) { throw error; }
             throw new HttpException("Failed to create user", error.HttpStatus);
@@ -29,6 +29,7 @@ export class UsersService {
     }
     async deleteUser(deleteUserDto: DeleteUserDto): Promise<{ message: string }> {
         try {
+            const db = new PostgreSQLInterface("postresql");
             await db.editTable("users_data", { email: deleteUserDto.email }, { is_deleted: true });
             return { message: 'User deleted successfully' };
         } catch (error) {
