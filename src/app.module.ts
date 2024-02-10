@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { APP_FILTER } from '@nestjs/core';
 import { CustomExceptionFilter } from './custom-exception.filter';
+import { NavbarModule } from './navbar/navbar.module';
 
 @Module({
-  imports: [UsersModule],
+  imports: [UsersModule, NavbarModule],
   controllers: [AppController],
   providers: [AppService, {
     provide: APP_FILTER,
