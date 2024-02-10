@@ -4,6 +4,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto, DeleteUserDto } from './dto/users.dto';
 import { PostgreSQLInterface } from 'src/tools/connections/postresqlcon';
 import { valToSql } from 'src/tools/sqlTools';
+import { getFields } from 'src/tools/utils';
 
 const db = new PostgreSQLInterface("postresql");
 
@@ -37,20 +38,37 @@ export class UsersService {
             throw new HttpException("Failed to delete user", error.HttpStatus);
         }
     }
-    async logIn(userDto: DeleteUserDto): Promise<{ message: string, userData?: any }> {
+    async logIn(userDto: DeleteUserDto): Promise<{ message: string, userData?: any, locationData?: any }> {
+        const userFields = ['email', 'name', 'password', 'user_id'] // todo move to config
+        const locationFields = ['location_id', 'location_name', 'location_picture']
+        const countryFields = ['country_flag', 'country_name']
         try {
-            let queryRawResults = await db.queryDB(`
-            select *
+            const query: string = `
+            with user_params as
+            (
+            select location_id, ${userFields.join(', ')}
             from users_data
             where email = ${valToSql(userDto.email)}
             and is_deleted = false
-            `);
+            )
+            select ${userFields.join(', ')}, ${locationFields.map(f => 'l.' + f).join(', ')}, ${countryFields.map(f => 'c.' + f).join(', ')}
+            from user_params u
+            left join locations l
+            on u.location_id = l.location_id
+            left join countries c
+            on l.country_id = c.country_id
+            `
+            let queryRawResults = await db.queryDB(query);
             if (queryRawResults.rowCount === 0) {
                 throw new HttpException('User is not exist', HttpStatus.NOT_FOUND);
             }
             const myRow = queryRawResults.rows[0];
             if (myRow.password === userDto.password) {
-                return { message: 'user is valid!', userData: myRow }
+                return {
+                    message: 'user is valid!',
+                    userData: getFields(myRow, userFields),
+                    locationData: getFields(myRow, [...locationFields, ...countryFields])
+                }
             } else {
                 throw new HttpException('Wrong Password', HttpStatus.UNAUTHORIZED);
             }
