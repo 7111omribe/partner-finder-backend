@@ -26,7 +26,7 @@ export class NavbarService {
                 throw new HttpException('No results', HttpStatus.NO_CONTENT);
             }
             return { results: queryRawResults.rows }
-        } catch (error) { // todo change all exception throwing
+        } catch (error) { 
             if (error instanceof HttpException) { throw error; }
             throw new HttpException("Failed to search", error.HttpStatus);
         }
