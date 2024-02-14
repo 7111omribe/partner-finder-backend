@@ -39,7 +39,7 @@ export class NavbarService {
             return { results: 'OK' }
         } catch (error) {
             if (error instanceof HttpException) { throw error; }
-            throw new HttpException("Failed to search", error.HttpStatus);
+            throw new HttpException("Failed to choose location", error.HttpStatus);
         }
     }
 }
