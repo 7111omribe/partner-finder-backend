@@ -1,7 +1,7 @@
 // src/users/users.service.ts
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { searchLocationDto } from 'src/dtos/navbar.dto';
+import { ChooseLocationDto, SearchLocationDto } from 'src/dtos/navbar.dto';
 import { PostgreSQLInterface } from 'src/tools/connections/postresqlcon';
 
 const db = new PostgreSQLInterface("postresql");
@@ -9,7 +9,7 @@ const db = new PostgreSQLInterface("postresql");
 @Injectable()
 export class NavbarService {
 
-    async searchLocation(userDto: searchLocationDto): Promise<{ results?: any }> {
+    async searchLocation(userDto: SearchLocationDto): Promise<{ results?: any }> {
         try {
             const query: string = `
             select l.location_id,
@@ -26,7 +26,18 @@ export class NavbarService {
                 throw new HttpException('No results', HttpStatus.NO_CONTENT);
             }
             return { results: queryRawResults.rows }
-        } catch (error) { 
+        } catch (error) {
+            if (error instanceof HttpException) { throw error; }
+            throw new HttpException("Failed to search", error.HttpStatus);
+        }
+    }
+
+    async chooseLocation(chooseLocationDto: ChooseLocationDto): Promise<{ results?: string }> {
+        try {
+
+            await db.editTable('users_data', { user_id: chooseLocationDto.userId }, { location_id: chooseLocationDto.locationId });
+            return { results: 'OK' }
+        } catch (error) {
             if (error instanceof HttpException) { throw error; }
             throw new HttpException("Failed to search", error.HttpStatus);
         }

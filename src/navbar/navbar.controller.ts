@@ -2,7 +2,7 @@
 
 import { Body, Controller, Post, HttpCode } from '@nestjs/common';
 import { NavbarService } from './navbar.service';
-import { searchLocationDto } from 'src/dtos/navbar.dto';
+import { ChooseLocationDto, SearchLocationDto } from 'src/dtos/navbar.dto';
 
 @Controller('navbar')
 export class NavbarController {
@@ -12,7 +12,12 @@ export class NavbarController {
 
     @Post("/search_location")
     @HttpCode(200)
-    async logIn(@Body() searchTextDto: searchLocationDto): Promise<any> {
+    async searchLocation(@Body() searchTextDto: SearchLocationDto): Promise<any> {
         return this.navbarService.searchLocation(searchTextDto);
+    }
+    @Post("/change_location")
+    @HttpCode(200)
+    async changeLocation(@Body() chooseLocationDto: ChooseLocationDto): Promise<any> {
+        return this.navbarService.chooseLocation(chooseLocationDto);
     }
 }

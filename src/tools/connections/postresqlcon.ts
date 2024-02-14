@@ -21,9 +21,9 @@ export class PostgreSQLInterface {
         const values = Object.values(data).map(valToSql);
 
         const query = `
-      INSERT INTO ${tableName} (${keys.join(', ')})
-      VALUES (${values.join(', ')})
-    `;
+        INSERT INTO ${tableName} (${keys.join(', ')})
+        VALUES (${values.join(', ')})
+        `;
 
         await this.client.query(query);
     }
@@ -50,10 +50,10 @@ export class PostgreSQLInterface {
             .join(' AND ');
 
         const query = `
-      UPDATE ${tableName}
-      SET ${setClause}
-      WHERE ${whereClause}
-    `;
+        UPDATE ${tableName}
+        SET ${setClause}
+        WHERE ${whereClause}
+        `;
 
         await this.client.query(query);
     }
