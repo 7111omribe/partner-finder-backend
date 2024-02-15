@@ -1,7 +1,7 @@
 
 
 import { Body, Controller, Post, HttpCode } from '@nestjs/common';
-import { ChangePasswordDto, CreateUserDto, DeleteUserDto, LoginDto } from './dto/users.dto';
+import { ChangePasswordDto, CreateUserDto, DeleteUserDto, LoginDto } from '../dtos/users.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')

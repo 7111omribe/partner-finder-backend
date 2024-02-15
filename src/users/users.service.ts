@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ChangePasswordDto, CreateUserDto, DeleteUserDto, LoginDto } from './dto/users.dto';
+import { ChangePasswordDto, CreateUserDto, DeleteUserDto, LoginDto } from '../dtos/users.dto';
 import { PostgreSQLInterface } from 'src/tools/connections/postresqlcon';
 import { valToSql } from 'src/tools/sqlTools';
 import { getFields } from 'src/tools/utils';
