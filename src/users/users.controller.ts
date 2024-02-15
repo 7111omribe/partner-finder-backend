@@ -13,9 +13,9 @@ export class UsersController {
         return this.usersService.createUser(createUserDto);
     }
 
-    @Post("/delete_user")
+    @Post("/delete_account")
     async deleteUser(@Body() deleteUserDto: DeleteUserDto): Promise<any> {
-        return this.usersService.deleteUser(deleteUserDto);
+        return this.usersService.deleteAccount(deleteUserDto);
     }
     @Post("/change_password")
     async changePassword(@Body() changePasswordDto: ChangePasswordDto): Promise<any> {
