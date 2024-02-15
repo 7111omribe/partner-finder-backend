@@ -9,7 +9,6 @@ export class LoginDto {
 }
 export class DeleteUserDto {
     readonly userId: number;
-    readonly password: string;
 }
 export class ChangePasswordDto {
     readonly userId: number;
