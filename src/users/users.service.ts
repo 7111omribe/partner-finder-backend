@@ -28,7 +28,6 @@ export class UsersService {
     }
     async deleteAccount(deleteUserDto: DeleteUserDto): Promise<{ message: string }> {
         try {
-            const db = new PostgreSQLInterface("postresql");
             await db.editTable("users_data", { user_id: deleteUserDto.userId }, { is_deleted: true });
             return { message: 'User deleted successfully' };
         } catch (error) {
