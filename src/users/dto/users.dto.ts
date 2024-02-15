@@ -3,7 +3,15 @@ export class CreateUserDto {
     readonly name: string;
     readonly password: string;
 }
-export class DeleteUserDto {
+export class LoginDto {
     readonly email: string;
     readonly password: string;
+}
+export class DeleteUserDto {
+    readonly userId: number;
+    readonly password: string;
+}
+export class ChangePasswordDto {
+    readonly userId: number;
+    readonly newPassword: string;
 }

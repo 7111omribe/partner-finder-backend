@@ -1,7 +1,5 @@
-// src/users/users.service.ts
-
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto, DeleteUserDto } from './dto/users.dto';
+import { ChangePasswordDto, CreateUserDto, DeleteUserDto, LoginDto } from './dto/users.dto';
 import { PostgreSQLInterface } from 'src/tools/connections/postresqlcon';
 import { valToSql } from 'src/tools/sqlTools';
 import { getFields } from 'src/tools/utils';
@@ -31,14 +29,24 @@ export class UsersService {
     async deleteUser(deleteUserDto: DeleteUserDto): Promise<{ message: string }> {
         try {
             const db = new PostgreSQLInterface("postresql");
-            await db.editTable("users_data", { email: deleteUserDto.email }, { is_deleted: true });
+            await db.editTable("users_data", { user_id: deleteUserDto.userId }, { is_deleted: true });
             return { message: 'User deleted successfully' };
         } catch (error) {
             if (error instanceof HttpException) { throw error; }
             throw new HttpException("Failed to delete user", error.HttpStatus);
         }
     }
-    async logIn(userDto: DeleteUserDto): Promise<{ message: string, userData?: any, locationData?: any }> {
+    async changePassword(changePasswordDto: ChangePasswordDto): Promise<{ message: string }> {
+        try {
+            const db = new PostgreSQLInterface("postresql");
+            await db.editTable("users_data", { user_id: changePasswordDto.userId }, { password: changePasswordDto.newPassword });
+            return { message: 'User deleted successfully' };
+        } catch (error) {
+            if (error instanceof HttpException) { throw error; }
+            throw new HttpException("Failed to change password", error.HttpStatus);
+        }
+    }
+    async logIn(userDto: LoginDto): Promise<{ message: string, userData?: any, locationData?: any }> {
         const userFields = ['email', 'name', 'password', 'user_id'] // todo move to config
         const locationFields = ['location_id', 'location_name', 'location_picture']
         const countryFields = ['country_flag', 'country_name']
