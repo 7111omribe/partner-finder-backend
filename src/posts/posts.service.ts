@@ -6,7 +6,7 @@ const conn = new MongoInterface('partnerFinder');
 
 @Injectable()
 export class PostsService {
-    async getUserPosts(getPostsDto: GetPostsDto): Promise<{ message: string, adminPosts: Record<string, any>[], othersPosts: Record<string, any>[] }> {
+    async getUserPosts(getPostsDto: GetPostsDto): Promise<{ message: string, results: Record<string, any>[] }> {
         try {
             const posts = await conn.aggregate('posts', [
                 {
@@ -16,16 +16,10 @@ export class PostsService {
                     }
                 }
             ])
-            const adminPosts = [];
-            const otherPosts = [];
-            for (const post of posts) {
-                if (post['creationData']['adminId'] === getPostsDto.userId) {
-                    adminPosts.push(post)
-                } else {
-                    otherPosts.push(post)
-                }
+            if (posts.length === 0) {
+                throw new HttpException('No results', HttpStatus.NO_CONTENT);
             }
-            return { message: 'OK', adminPosts: adminPosts, othersPosts: otherPosts }
+            return { message: 'OK', results: posts }
         } catch (error) {
             if (error instanceof HttpException) { throw error; }
             throw new HttpException("Failed to run query", error.HttpStatus);
