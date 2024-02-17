@@ -10,7 +10,7 @@ export class MongoInterface {
 
     }
 
-    public async aggregate(collectionName: string, query: Record<string, any>[]) {
+    public async aggregate(collectionName: string, query: Record<string, any>[]): Promise<Record<string, any>[]> {
         const collection = this.conn.collection(collectionName);
         const result = await collection.aggregate(query).toArray();
         return result;
