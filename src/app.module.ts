@@ -6,9 +6,10 @@ import { APP_FILTER } from '@nestjs/core';
 import { CustomExceptionFilter } from './custom-exception.filter';
 import { NavbarModule } from './navbar/navbar.module';
 import { ActivitiesModule } from './activities/activities.module';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
-  imports: [UsersModule, NavbarModule, ActivitiesModule],
+  imports: [UsersModule, NavbarModule, ActivitiesModule, PostsModule],
   controllers: [AppController],
   providers: [AppService, {
     provide: APP_FILTER,
