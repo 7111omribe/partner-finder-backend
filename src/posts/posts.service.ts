@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { MongoInterface } from 'src/tools/connections/mongoCon';
-import { GetPostsDto, LoginDto } from '../dtos/posts.dto';
+import { GetPostsDto } from '../dtos/posts.dto';
 
 const conn = new MongoInterface('partnerFinder');
 

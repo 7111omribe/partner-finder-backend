@@ -7,9 +7,9 @@ import { PostsService } from './posts.service';
 @Controller('posts')
 export class PostsController {
     constructor(private readonly postsService: PostsService) { }
-    @Post("/getPosts")
+    @Post("/getMyPosts")
     @HttpCode(200)
-    async logIn(@Body() getPostsDto: GetPostsDto): Promise<any> {
+    async getUserPosts(@Body() getPostsDto: GetPostsDto): Promise<any> {
         return this.postsService.getUserPosts(getPostsDto);
     }
 }
