@@ -12,4 +12,9 @@ export class PostsController {
     async getUserPosts(@Body() getPostsDto: GetPostsDto): Promise<any> {
         return this.postsService.getUserPosts(getPostsDto);
     }
+    @Post("/getOthersPosts")
+    @HttpCode(200)
+    async getOthersPosts(@Body() getPostsDto: GetPostsDto): Promise<any> {
+        return this.postsService.getOthersPosts(getPostsDto);
+    }
 }
