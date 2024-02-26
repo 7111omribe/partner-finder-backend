@@ -17,4 +17,9 @@ export class PostsController {
     async getOthersPosts(@Body() getPostsDto: GetPostsDto): Promise<any> {
         return this.postsService.getOthersPosts(getPostsDto);
     }
+    @Post("/createPost")
+    @HttpCode(200)
+    async createPost(@Body() createPostDto: Record<string, any>): Promise<any> {
+        return this.postsService.createPost(createPostDto);
+    }
 }

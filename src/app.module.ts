@@ -7,9 +7,10 @@ import { CustomExceptionFilter } from './custom-exception.filter';
 import { NavbarModule } from './navbar/navbar.module';
 import { ActivitiesModule } from './activities/activities.module';
 import { PostsModule } from './posts/posts.module';
+import { CreatePostsModule } from './createPost/createPosts.module';
 
 @Module({
-  imports: [UsersModule, NavbarModule, ActivitiesModule, PostsModule],
+  imports: [UsersModule, NavbarModule, ActivitiesModule, PostsModule, CreatePostsModule],
   controllers: [AppController],
   providers: [AppService, {
     provide: APP_FILTER,

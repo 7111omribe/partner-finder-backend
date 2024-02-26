@@ -44,4 +44,17 @@ export class PostsService {
             throw new HttpException("Failed to run query", error.HttpStatus);
         }
     }
+    async createPost(createPostDto: Record<string, any>): Promise<{ message: string, newId: string }> {
+        const doc = {
+            activityData:{
+                
+            }
+        }
+        const resp = await conn.insert('posts', createPostDto)
+        if (resp.acknowledged === false) {
+            throw new HttpException('error on mongo insertion', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return { message: 'OK', newId: resp.insertedId.toString() }
+
+    }
 }

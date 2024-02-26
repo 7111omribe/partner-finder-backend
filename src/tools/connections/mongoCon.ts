@@ -1,4 +1,4 @@
-import { MongoClient, Db, ServerApiVersion } from "mongodb";
+import { MongoClient, Db, ServerApiVersion, InsertOneResult  } from "mongodb";
 
 export class MongoInterface {
     private conn: Db;
@@ -13,6 +13,12 @@ export class MongoInterface {
     public async aggregate(collectionName: string, query: Record<string, any>[]): Promise<Record<string, any>[]> {
         const collection = this.conn.collection(collectionName);
         const result = await collection.aggregate(query).toArray();
+        return result;
+    }
+
+    public async insert(collectionName: string, document: Record<string, any>): Promise<InsertOneResult> {
+        const collection = this.conn.collection(collectionName);
+        const result = await collection.insertOne(document);
         return result;
     }
 
