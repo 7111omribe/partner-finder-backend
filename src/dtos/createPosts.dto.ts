@@ -1,4 +1,3 @@
-
 export interface InputObject {
     userId: any;
     activityId?: string;
@@ -6,6 +5,7 @@ export interface InputObject {
     title: string;
     description: string;
     activityTime?: string;
+    activityDate?: string;
     minParticipants?: string;
     maxParticipants?: any;
     alreayMembersNum: any;

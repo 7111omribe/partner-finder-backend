@@ -17,10 +17,9 @@ function cleanObject(obj: Record<string, any>): Record<string, any> {
 }
 
 function transformObject(input: InputObject): OutputObject {
-    const currentDate = new Date().toISOString();
+    const currentDate = new Date()
 
     const output: OutputObject = {
-        // postId: 1, // Provide postId value accordingly
         activityData: cleanObject({
             activityId: input.activityId,
             title: input.title,
@@ -29,15 +28,11 @@ function transformObject(input: InputObject): OutputObject {
             locationId: input.locationId,
         }),
         creationData: cleanObject({
-            insertionTime: {
-                $date: currentDate,
-            },
+            insertionTime: currentDate,
             adminId: input.userId,
         }),
         postData: cleanObject({
-            plannedDate: {
-                $date: currentDate,
-            },
+            plannedDate: new Date(input.activityDate),
             minParticipantes: input.minParticipants ? parseInt(input.minParticipants, 10) : undefined,
             maxParticipants: input.maxParticipants,
         }),
