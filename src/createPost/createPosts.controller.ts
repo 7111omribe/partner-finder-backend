@@ -2,13 +2,14 @@
 
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { CreatePostsService } from './createPosts.service';
+import { CreatePostDto, InputObject } from 'src/dtos/createPosts.dto';
 
-@Controller('createPosts')
+@Controller('postsActions')
 export class CreatePostsController {
     constructor(private readonly postsService: CreatePostsService) { }
     @Post("/createPost")
-    @HttpCode(200)
-    async createPost(@Body() createPostDto: Record<string, any>): Promise<any> {
+    @HttpCode(201)
+    async createPost(@Body() createPostDto:CreatePostDto): Promise<any> {
         return this.postsService.createPost(createPostDto);
     }
 }
