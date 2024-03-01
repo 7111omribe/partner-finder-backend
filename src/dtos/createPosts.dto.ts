@@ -23,3 +23,8 @@ export class CreatePostDto {
     readonly userId: number;
     readonly locationId: number;
 }
+
+export class SearchActivityDto {
+    readonly searchText: string;
+    readonly locationId: number;
+}

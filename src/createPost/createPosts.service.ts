@@ -1,7 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreatePostDto, InputObject, OutputObject } from 'src/dtos/createPosts.dto';
+import { CreatePostDto, InputObject, OutputObject, SearchActivityDto } from 'src/dtos/createPosts.dto';
 import { MongoInterface } from 'src/tools/connections/mongoCon';
+import { PostgreSQLInterface } from 'src/tools/connections/postresqlcon';
 
+const db = new PostgreSQLInterface("postresql");
 
 
 function cleanObject(obj: Record<string, any>): Record<string, any> {
@@ -68,5 +70,25 @@ export class CreatePostsService {
         }
         return { message: 'OK', newId: resp.insertedId.toString() }
 
+    }
+
+
+    async searchActivity(searchActivityDto: SearchActivityDto): Promise<{ results?: any }> {
+        try {
+            const query: string = `
+            select *
+            from activities
+            where location_id = ${searchActivityDto.locationId}
+            and activity_name like '%${searchActivityDto.searchText}%' 
+            `
+            let queryRawResults = await db.queryDB(query);
+            if (queryRawResults.rowCount === 0) {
+                throw new HttpException('No results', HttpStatus.NO_CONTENT);
+            }
+            return { results: queryRawResults.rows }
+        } catch (error) {
+            if (error instanceof HttpException) { throw error; }
+            throw new HttpException("Failed to search", error.HttpStatus);
+        }
     }
 }
