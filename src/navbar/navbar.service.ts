@@ -9,7 +9,7 @@ const db = new PostgreSQLInterface("postresql");
 @Injectable()
 export class NavbarService {
 
-    async searchLocation(userDto: SearchLocationDto): Promise<{ results?: any }> {
+    async searchLocation(searchLocationDto: SearchLocationDto): Promise<{ results?: any }> {
         try {
             const query: string = `
             select l.location_id,
@@ -19,7 +19,7 @@ export class NavbarService {
             from locations l
             join countries c
             on l.country_id = c.country_id
-            and l.location_name||', '||c.country_name like '%${userDto.searchText}%' 
+            and l.location_name||', '||c.country_name like '%${searchLocationDto.searchText}%' 
             `
             let queryRawResults = await db.queryDB(query);
             if (queryRawResults.rowCount === 0) {
