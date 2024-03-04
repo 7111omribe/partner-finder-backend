@@ -23,7 +23,7 @@ function transformObject(input: InputObject): OutputObject {
 
     const output: OutputObject = {
         activityData: cleanObject({
-            activityId: input.activityId,
+            activityId: input.activity,
             title: input.title,
             description: input.description,
             activityTime: input.activityTime,

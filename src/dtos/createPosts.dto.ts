@@ -1,6 +1,6 @@
 export interface InputObject {
     userId: number;
-    activityId?: string;
+    activity?: string;
     locationId: number;
     title: string;
     description: string;
