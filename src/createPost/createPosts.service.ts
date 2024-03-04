@@ -27,6 +27,7 @@ function transformObject(input: InputObject): OutputObject {
             title: input.title,
             description: input.description,
             activityTime: input.activityTime,
+            activityType: input.activityType,
             locationId: input.locationId,
         }),
         creationData: cleanObject({

@@ -4,6 +4,7 @@ export interface InputObject {
     locationId: number;
     title: string;
     description: string;
+    activityType?: string;
     activityTime?: string;
     activityDate?: string;
     minParticipants?: string;
