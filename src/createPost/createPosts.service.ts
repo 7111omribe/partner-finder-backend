@@ -43,7 +43,7 @@ function transformObject(input: InputObject): OutputObject {
             attendencies: [
                 {
                     userId: input.userId,
-                    num: input.alreayMembersNum,
+                    num: input.myMembersNum,
                 },
             ],
         }),
