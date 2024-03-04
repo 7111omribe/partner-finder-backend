@@ -72,30 +72,4 @@ export class PostsService {
 
         return { message: 'OK' };
     }
-
-
-    async joinGroup2(joinGroupDto: JoinGroupDto): Promise<{ message: string }> {
-
-        const resp = await conn.aggregate('posts', [
-            {
-                '$match': {
-                    _id: joinGroupDto.postId,
-                },
-            },
-            {
-                '$push': {
-                    'statusData.attendencies': {
-                        userId: joinGroupDto.userId,
-                        num: joinGroupDto.friendsNum + 1,
-                        userNumInPost: { '$add': [{ '$max': '$statusData.attendencies.userNumInPost' }, 1] },
-                    },
-                },
-            },
-            {
-                '$merge': 'posts',
-            },
-        ])
-        return { message: 'OK' }
-
-    }
 }
