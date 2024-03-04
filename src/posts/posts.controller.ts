@@ -1,7 +1,7 @@
 
 
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { GetPostsDto } from '../dtos/posts.dto';
+import { GetPostsDto, JoinGroupDto } from '../dtos/posts.dto';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -17,9 +17,9 @@ export class PostsController {
     async getOthersPosts(@Body() getPostsDto: GetPostsDto): Promise<any> {
         return this.postsService.getOthersPosts(getPostsDto);
     }
-    @Post("/createPost")
+    @Post("/joinGroup")
     @HttpCode(200)
-    async createPost(@Body() createPostDto: Record<string, any>): Promise<any> {
-        return this.postsService.createPost(createPostDto);
+    async joinGroup(@Body() joinGroupDto: JoinGroupDto): Promise<any> {
+        return this.postsService.joinGroup(joinGroupDto);
     }
 }
