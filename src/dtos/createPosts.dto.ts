@@ -1,14 +1,14 @@
 export interface InputObject {
-    userId: any;
+    userId: number;
     activityId?: string;
-    locationId: any;
+    locationId: number;
     title: string;
     description: string;
     activityTime?: string;
     activityDate?: string;
     minParticipants?: string;
-    maxParticipants?: any;
-    alreayMembersNum: any;
+    maxParticipants?: number;
+    myMembersNum: number;
 }
 
 export interface OutputObject {
