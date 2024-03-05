@@ -14,7 +14,7 @@ export class MongoInterface {
         return this.conn.collection(collectionName);
     }
 
-    public async update(collectionName: string, whereQuery: Record<string, any>, setQuery: Record<string, any>) { // todo rename to updateOne
+    public async updateOne(collectionName: string, whereQuery: Record<string, any>, setQuery: Record<string, any>) {
         const collection: Collection = this.conn.collection(collectionName);
         const result = await collection.updateOne(whereQuery, setQuery);
         return result; // todo add error when not found 
