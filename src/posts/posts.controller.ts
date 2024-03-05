@@ -18,8 +18,13 @@ export class PostsController {
         return this.postsService.getOthersPosts(getPostsDto);
     }
     @Post("/joinGroup")
-    @HttpCode(200)
+    @HttpCode(201)
     async joinGroup(@Body() joinGroupDto: JoinGroupDto): Promise<any> {
         return this.postsService.joinGroup(joinGroupDto);
+    }
+    @Post("/leaveGroup")
+    @HttpCode(201)
+    async leaveGroup(@Body() joinGroupDto: JoinGroupDto): Promise<any> {
+        return this.postsService.leaveGroup(joinGroupDto);
     }
 }

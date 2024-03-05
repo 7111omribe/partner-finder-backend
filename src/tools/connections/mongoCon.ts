@@ -14,10 +14,17 @@ export class MongoInterface {
         return this.conn.collection(collectionName);
     }
 
-    public async update(collectionName: string, whereQuery: Record<string, any>, setQuery: Record<string, any>) {
+    public async update(collectionName: string, whereQuery: Record<string, any>, setQuery: Record<string, any>) { // todo rename to updateOne
         const collection: Collection = this.conn.collection(collectionName);
         const result = await collection.updateOne(whereQuery, setQuery);
-        return result;
+        return result; // todo add error when not found 
+    }
+
+    public async findOne(collectionName: string, query: Record<string, any>) {
+        const collection: Collection = this.conn.collection(collectionName);
+        const results = await collection.findOne(query)
+        return results;
+
     }
 
     public async aggregate(collectionName: string, query: Record<string, any>[]): Promise<Record<string, any>[]> {
@@ -29,6 +36,11 @@ export class MongoInterface {
     public async insert(collectionName: string, document: Record<string, any>): Promise<InsertOneResult> {
         const collection = this.conn.collection(collectionName);
         const result = await collection.insertOne(document);
+        return result;
+    }
+    public async deleteOne(collectionName: string, query: Record<string, any>): Promise<any> {
+        const collection = this.conn.collection(collectionName);
+        const result = await collection.deleteOne(query);
         return result;
     }
 

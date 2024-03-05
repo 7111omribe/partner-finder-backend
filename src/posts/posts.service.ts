@@ -59,7 +59,6 @@ export class PostsService {
         ]);
 
         const newUserNumInPost = maxUserNumInPost[0]?.maxUserNumInPost + 1 || 1;
-
         await conn.update('posts', idFilter, {
             $push: {
                 'statusData.attendencies': {
@@ -71,5 +70,30 @@ export class PostsService {
         });
 
         return { message: 'OK' };
+    }
+    async leaveGroup(joinGroupDto: JoinGroupDto): Promise<{ message: string }> {
+        const idFilter = { _id: new ObjectId(joinGroupDto.postId) }
+        await conn.update('posts', idFilter, {
+            $pull: { 'statusData.attendencies': { userId: joinGroupDto.userId } }
+        });
+        await this.handleAdminLeaving(idFilter, joinGroupDto.userId)
+
+        return { message: 'OK' };
+    }
+
+    private async handleAdminLeaving(postFilter: any, userId: number): Promise<any> {
+        const doc = await conn.findOne("posts", postFilter)
+        if (doc['creationData']['adminId'] == userId) {
+            const members = doc['statusData']['attendencies']
+            if (members.length > 0) {
+                const newAdminId = members[0]['userId']
+                const resp = await conn.update('posts', postFilter, {
+                    'creationData.adminId': newAdminId
+                })
+            }
+            else {
+                const resp = await conn.deleteOne('posts', postFilter)
+            }
+        }
     }
 }
