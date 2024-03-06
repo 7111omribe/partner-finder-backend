@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { MongoInterface } from 'src/tools/connections/mongoCon';
-import { GetPostsDto, JoinGroupDto } from '../dtos/posts.dto';
+import { EditPostDataDto, GetPostsDto, JoinGroupDto } from '../dtos/posts.dto';
 import { ObjectId } from 'mongodb';
 
 const conn = new MongoInterface('partnerFinder');
@@ -95,5 +95,12 @@ export class PostsService {
                 const resp = await conn.deleteOne('posts', postFilter)
             }
         }
+    }
+    async editPostData(editPostDataDto: EditPostDataDto): Promise<{ message: string }> {
+        const idFilter = { _id: new ObjectId(editPostDataDto.postId) };
+        let updateQuery = {}
+        updateQuery[editPostDataDto.path] = editPostDataDto.newValue
+        await conn.updateOne('posts', idFilter, { $set: updateQuery });
+        return { message: 'OK' };
     }
 }

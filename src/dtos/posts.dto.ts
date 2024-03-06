@@ -8,3 +8,8 @@ export class JoinGroupDto {
     readonly postId: number;
     readonly friendsNum: number;
 }
+export class EditPostDataDto {
+    readonly postId: string;
+    readonly path: string;
+    readonly newValue: any;
+}
